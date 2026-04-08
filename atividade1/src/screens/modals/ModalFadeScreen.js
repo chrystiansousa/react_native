@@ -1,33 +1,29 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, Button, StyleSheet } from 'react-native';
 import { globalStyles } from '../../styles/globalStyles';
-import { theme } from '../../styles/theme';
 
 export default function ModalFadeScreen() {
-  const [visible, setVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={globalStyles.centered}>
-      <Text style={globalStyles.title}>Modal - Efeito Fade</Text>
-      <Text style={globalStyles.text}>Este modal utiliza esmaecimento.</Text>
+      <Text style={globalStyles.title}>Animação: Fade</Text>
+      <Text style={globalStyles.text}>Este modal surge suavemente (opacidade).</Text>
       
       <View style={{ marginTop: 20 }}>
-        <Button title="Abrir Modal Fade" onPress={() => setVisible(true)} color={theme.colors.primary} />
+        <Button title="Ver Efeito Fade" onPress={() => setModalVisible(true)} />
       </View>
 
-      <Modal 
-        animationType="fade" // Diferencial desta tela
-        visible={visible} 
+      <Modal
+        animationType="fade" //diferencial: efeito de esmaecimento
         transparent={true}
-        onRequestClose={() => setVisible(false)}
+        visible={modalVisible}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={globalStyles.title}>Efeito Fade</Text>
-            <Text style={globalStyles.text}>O conteúdo surgiu suavemente!</Text>
-            <View style={{ marginTop: 20 }}>
-              <Button title="Fechar" onPress={() => setVisible(false)} color="red" />
-            </View>
+        <View style={styles.overlay}>
+          <View style={styles.content}>
+            <Text style={globalStyles.title}>Modal Fade</Text>
+            <Text style={globalStyles.text}>Utilizando transição suave de transparência.</Text>
+            <Button title="Fechar" onPress={() => setModalVisible(false)} />
           </View>
         </View>
       </Modal>
@@ -36,17 +32,6 @@ export default function ModalFadeScreen() {
 }
 
 const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: '80%',
-    backgroundColor: theme.colors.white,
-    padding: theme.spacing * 2,
-    borderRadius: 15,
-    elevation: 5,
-  }
+  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
+  content: { backgroundColor: 'white', padding: 30, borderRadius: 10, width: '80%' }
 });
