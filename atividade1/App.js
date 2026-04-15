@@ -5,7 +5,8 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 
 //importo o meu navegador principal, a gaveta, que criei separando a lógica de navegação
-import AppNavigator from './src/navigation/AppNavigator';
+// Altera esta linha:
+import AppNavigator from './src/componentes/AppNavigator';
 
 export default function App() {
   return (
