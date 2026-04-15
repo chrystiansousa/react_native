@@ -1,7 +1,6 @@
-import { initializeApp } from "firebase/app";
-// ADICIONE ESTAS DUAS LINHAS:
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBEY_9wFiYWjev_BEFm6v8ls0qo-MRWXSM",
@@ -12,8 +11,15 @@ const firebaseConfig = {
   appId: "1:764179185621:web:94b7558f770768d48e475c"
 };
 
-const app = initializeApp(firebaseConfig);
+// Inicialização segura: 
+// Verifica explicitamente se já existe um app instanciado.
+let app;
+if (getApps().length === 0) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApp();
+}
 
-// ADICIONE ESTAS DUAS LINHAS PARA EXPORTAR OS SERVIÇOS:
+// Exporta os serviços passando a instância segura do app
 export const auth = getAuth(app);
 export const db = getFirestore(app);
