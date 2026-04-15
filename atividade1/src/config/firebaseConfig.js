@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-// Faltam estas importações:
+// ADICIONE ESTAS DUAS LINHAS:
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
@@ -14,6 +14,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// Faltam estas exportações para que as outras telas funcionem:
+// ADICIONE ESTAS DUAS LINHAS PARA EXPORTAR OS SERVIÇOS:
 export const auth = getAuth(app);
 export const db = getFirestore(app);
