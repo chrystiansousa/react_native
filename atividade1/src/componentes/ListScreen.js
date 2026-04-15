@@ -1,49 +1,55 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { db } from '../config/firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
-import { globalStyles } from '../styles/globalStyles';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 
 export default function ListScreen() {
-  const [rentals, setRentals] = useState([]);
+  const [alugueis, setAlugueis] = useState([]);
 
-  // Hook useEffect para buscar os dados assim que a tela for carregada.
   useEffect(() => {
-    const fetchRentals = async () => {
-      const querySnapshot = await getDocs(collection(db, 'rentals'));
-      const data = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
-      setRentals(data);
-    };
-    fetchRentals();
+    // Cria a referência para a coleção e ordena pelos mais recentes
+    const q = query(collection(db, 'alugueis'), orderBy('dataRegistro', 'desc'));
+
+    // onSnapshot escuta o banco de dados em tempo real
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const listaTemp = [];
+      querySnapshot.forEach((doc) => {
+        listaTemp.push({ id: doc.id, ...doc.data() });
+      });
+      setAlugueis(listaTemp);
+    }, (error) => {
+      console.log("Erro ao buscar dados: ", error);
+    });
+
+    // Limpa o listener quando a tela for fechada
+    return () => unsubscribe();
   }, []);
 
+  const renderItem = ({ item }) => (
+    <View style={styles.card}>
+      <Text style={styles.textoDestaque}>{item.marca} - {item.modelo}</Text>
+      <Text>Período: {item.dias} dias</Text>
+    </View>
+  );
+
   return (
-    <View style={globalStyles.container}>
-      <Text style={globalStyles.title}>Histórico de Aluguéis</Text>
-      
-      <FlatList 
-        data={rentals}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={{ fontWeight: 'bold' }}>Carro: {item.carName}</Text>
-            <Text>Cliente: {item.clientName}</Text>
-            <Text>Valor: R$ {item.value}</Text>
-            <Text>Data: {item.date}</Text>
-          </View>
-        )}
-      />
+    <View style={styles.container}>
+      {alugueis.length === 0 ? (
+        <Text style={styles.emptyText}>Nenhum aluguel registrado ainda.</Text>
+      ) : (
+        <FlatList 
+          data={alugueis}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#fff',
-    padding: 15,
-    marginVertical: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#eee'
-  }
+  container: { flex: 1, padding: 20 },
+  card: { padding: 15, marginBottom: 10, backgroundColor: '#f9f9f9', borderRadius: 8, borderWidth: 1, borderColor: '#ddd' },
+  textoDestaque: { fontSize: 16, fontWeight: 'bold', marginBottom: 5 },
+  emptyText: { textAlign: 'center', marginTop: 50, fontSize: 16, color: '#666' }
 });

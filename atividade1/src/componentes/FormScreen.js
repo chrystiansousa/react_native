@@ -1,42 +1,76 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, Alert } from 'react-native';
+import { View, TextInput, Button, Alert, StyleSheet, Text } from 'react-native';
 import { db } from '../config/firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
-import { globalStyles } from '../styles/globalStyles';
 
-export default function FormScreen() {
-  const [carName, setCarName] = useState('');
-  const [clientName, setClientName] = useState('');
-  const [value, setValue] = useState('');
-  const [date, setDate] = useState('');
+export default function FormScreen({ navigation }) {
+  const [modelo, setModelo] = useState('');
+  const [marca, setMarca] = useState('');
+  const [dias, setDias] = useState('');
 
-  // Função para persistir os dados do aluguel no Firestore.
-  const handleSaveRental = async () => {
+  const handleSave = async () => {
+    // Validação simples
+    if (!modelo || !marca || !dias) {
+      Alert.alert('Atenção', 'Por favor, preencha todos os campos.');
+      return;
+    }
+
     try {
-      // Crio um novo documento dentro da coleção 'rentals'
-      await addDoc(collection(db, 'rentals'), {
-        carName,
-        clientName,
-        value: parseFloat(value),
-        date,
-        createdAt: new Date()
+      // Tenta salvar na coleção 'alugueis'
+      await addDoc(collection(db, 'alugueis'), {
+        modelo: modelo,
+        marca: marca,
+        dias: parseInt(dias),
+        dataRegistro: new Date().toISOString()
       });
-      Alert.alert('Salvo!', 'Aluguel registrado com sucesso.');
+      
+      Alert.alert('Sucesso!', 'Veículo registrado com sucesso.');
+      
+      // Limpa os campos
+      setModelo('');
+      setMarca('');
+      setDias('');
+      
+      // Redireciona para a tela de Histórico
+      navigation.navigate('Historico');
+
     } catch (error) {
       Alert.alert('Erro ao salvar', error.message);
+      console.error(error);
     }
   };
 
   return (
-    <View style={globalStyles.container}>
-      <Text style={globalStyles.title}>Novo Aluguel de Carro</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Registrar Novo Aluguel</Text>
       
-      <TextInput placeholder="Nome do Carro" onChangeText={setCarName} style={{ borderBottomWidth: 1, marginBottom: 15 }} />
-      <TextInput placeholder="Nome do Cliente" onChangeText={setClientName} style={{ borderBottomWidth: 1, marginBottom: 15 }} />
-      <TextInput placeholder="Valor do Aluguel" keyboardType="numeric" onChangeText={setValue} style={{ borderBottomWidth: 1, marginBottom: 15 }} />
-      <TextInput placeholder="Data (DD/MM/AAAA)" onChangeText={setDate} style={{ borderBottomWidth: 1, marginBottom: 15 }} />
+      <TextInput 
+        style={styles.input} 
+        placeholder="Marca do Veículo (ex: Toyota)" 
+        value={marca}
+        onChangeText={setMarca} 
+      />
+      <TextInput 
+        style={styles.input} 
+        placeholder="Modelo (ex: Corolla)" 
+        value={modelo}
+        onChangeText={setModelo} 
+      />
+      <TextInput 
+        style={styles.input} 
+        placeholder="Quantidade de Dias" 
+        keyboardType="numeric"
+        value={dias}
+        onChangeText={setDias} 
+      />
       
-      <Button title="Salvar Registro" onPress={handleSaveRental} color="green" />
+      <Button title="Salvar Registro" onPress={handleSave} color="#2196F3" />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 20, justifyContent: 'center' },
+  title: { fontSize: 20, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+  input: { borderWidth: 1, borderColor: '#ccc', padding: 10, marginBottom: 15, borderRadius: 5 }
+});

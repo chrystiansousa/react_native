@@ -21,8 +21,8 @@ function DrawerNavigator() {
   return (
     <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen name="Home" component={HomeScreen} options={{ title: 'Início' }} />
-      <Drawer.Screen name="NovoAluguel" component={FormScreen} options={{ title: 'Novo Aluguer' }} />
-      <Drawer.Screen name="Historico" component={ListScreen} options={{ title: 'Histórico de Alugueres' }} />
+      <Drawer.Screen name="NovoAluguel" component={FormScreen} options={{ title: 'Novo Aluguel' }} />
+      <Drawer.Screen name="Historico" component={ListScreen} options={{ title: 'Histórico de Aluguel' }} />
       <Drawer.Screen name="Modais" component={ModalTabsNavigator} options={{ title: 'Modais' }} />
       <Drawer.Screen name="Listas" component={ScrollTabsNavigator} options={{ title: 'Listas' }} />
     </Drawer.Navigator>
