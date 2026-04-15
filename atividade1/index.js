@@ -1,8 +1,10 @@
 import { registerRootComponent } from 'expo';
-
 import App from './App';
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
+// Esta função registra o componente principal no ambiente nativo do Expo.
 registerRootComponent(App);
+
+// ADICIONE ESTA LINHA ABAIXO:
+// Ela garante que o Metro encontre uma exportação padrão para renderizar, 
+// eliminando o erro de "No default export".
+export default App;
