@@ -1,0 +1,10 @@
+/workspaces/react_native/backend/src/main/java/com/example/backend/BackendApplication.java
+/workspaces/react_native/backend/src/main/java/com/example/backend/dto/CriarTarefaRequest.java
+/workspaces/react_native/backend/src/main/java/com/example/backend/dto/ErrorResponse.java
+/workspaces/react_native/backend/src/main/java/com/example/backend/model/Tarefa.java
+/workspaces/react_native/backend/src/main/java/com/example/backend/exception/TarefaNaoEncontradaException.java
+/workspaces/react_native/backend/src/main/java/com/example/backend/exception/GlobalExceptionHandler.java
+/workspaces/react_native/backend/src/main/java/com/example/backend/service/TarefaService.java
+/workspaces/react_native/backend/src/main/java/com/example/backend/exception/TituloInvalidoException.java
+/workspaces/react_native/backend/src/main/java/com/example/backend/controller/TarefaController.java
+/workspaces/react_native/backend/src/main/java/com/example/backend/repository/TarefaRepository.java

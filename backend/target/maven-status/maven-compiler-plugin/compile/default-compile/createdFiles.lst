@@ -1,0 +1,10 @@
+com/example/backend/controller/TarefaController.class
+com/example/backend/repository/TarefaRepository.class
+com/example/backend/BackendApplication.class
+com/example/backend/service/TarefaService.class
+com/example/backend/exception/TituloInvalidoException.class
+com/example/backend/model/Tarefa.class
+com/example/backend/dto/CriarTarefaRequest.class
+com/example/backend/dto/ErrorResponse.class
+com/example/backend/exception/TarefaNaoEncontradaException.class
+com/example/backend/exception/GlobalExceptionHandler.class
